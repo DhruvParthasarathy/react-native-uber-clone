@@ -6,8 +6,10 @@ import {GOOGLE_MAPS_APIKEY} from "@env"
 
 import tw from "tailwind-react-native-classnames"
 import NavOptions from '../components/NavOptions'
+import {useDispatch} from 'react-redux';
 
 const HomeScreen = () => {
+    const dispatch = useDispatch();
     return (
         <SafeAreaView 
         style={
@@ -20,21 +22,25 @@ const HomeScreen = () => {
                 source={{ uri: "https://links.papareact.com/gzs"}} />
 
                 <GooglePlacesAutocomplete
-                    placeholder='Where to ?'
+                    placeholder='Where from?'
                     styles={{
                         container: {
-                            flex: 0
+                            flex: 0,
+                        },
+                        textInput: {
+                            fontSize: 18,
                         }
                     }}
-                    onPress={(data, details = null) => {
-                        // 'details' is provided when fetchDetails = true
-                        console.log(data, details);
-                    }}
+                    debounce={400}
+                    onFail={(error) => console.log(error)}
                     nearbyPlacesAPI="GooglePlacesSearch"
                     query={{
                         key: GOOGLE_MAPS_APIKEY,
                         language: 'en',
                     }}
+                    minLength={2}
+                    enablePoweredByContainer={false}
+                    returnKeyType="Search"
                     />
                 <NavOptions/>
             </View>
